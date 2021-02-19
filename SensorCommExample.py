@@ -133,7 +133,11 @@ def main():
     first_unit = data['Unit'].unique()[0]
     first_unit_data = data[(data['Unit'] == first_unit) & (data['VariableName'] == 'TemperatureDet')]
     print(first_unit_data)
-    plt.plot(first_unit_data['VariableValue'])
+
+    plt.plot(first_unit_data['Index'], first_unit_data['VariableValue'])
+    plt.title('Internal Temperature of The First Sensor')
+    plt.xlabel('Readings')
+    plt.ylabel('Internal Temperature (C)')
     plt.show()
 
 
