@@ -5,6 +5,7 @@ from pandas import DataFrame
 from serial.tools import list_ports
 
 from SensorModbus import ModbusMaster, ModbusUnit
+from TargetTemperatureFloat import TargetTemperatureFloat
 
 
 def main():
@@ -37,8 +38,13 @@ def main():
                     for name in names:
                         reading = unit.read_variable(name)
 
+                        if name == 'TemperatureTarget':
+                            printed_reading = TargetTemperatureFloat.to_string(reading)
+                        else:
+                            printed_reading = str(reading)
+
                         # print data
-                        print("{0},{1},{2}".format(i, name, reading))
+                        print("{0},{1},{2}".format(i, name, printed_reading))
 
                         # Add data to database
                         data = data.append({'Unit': f'{com_port}-{unit.slave_id}', 'Index': i, 'VariableName': name,
