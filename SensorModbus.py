@@ -1,9 +1,9 @@
 from struct import pack, unpack
 from time import sleep
 
-import serial
 from modbus_tk import defines as cst, modbus_rtu
 from modbus_tk.exceptions import ModbusInvalidResponseError
+from serial import Serial
 
 
 class ModbusMaster:
@@ -29,10 +29,10 @@ class ModbusMaster:
 
     @staticmethod
     def _create_serial_master(com_port):
-        serial_master = modbus_rtu.RtuMaster(
-            serial.Serial(port=com_port, baudrate=9600, bytesize=8, parity='E', stopbits=1, xonxoff=0)
-        )
+        serial = Serial(port=com_port, baudrate=9600, bytesize=8, parity='E', stopbits=1, xonxoff=0)
+        serial_master = modbus_rtu.RtuMaster(serial)
         serial_master.set_timeout(0.04)  # ModbusInvalidResponseError "Response length is invalid 0" if <0.04
+        serial.write_timeout = 0.04
         return serial_master
 
 
